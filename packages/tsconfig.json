@@ -24,9 +24,6 @@
 		/** Aliases for the packages */
 		"paths": {
 			"@elementor/*": ["./packages/*/src"],
-			"test-utils": ["./tests/test-utils"]
-		},
-
-		"typeRoots": ["./node_modules/@types"]
+		}
 	}
 }

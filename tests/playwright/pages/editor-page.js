@@ -2,41 +2,14 @@ const { addElement, getElementSelector } = require( '../assets/elements-utils' )
 const BasePage = require( './base-page.js' );
 
 module.exports = class EditorPage extends BasePage {
+	isPanelLoaded = false;
+
 	constructor( page, testInfo, cleanPostId = null ) {
 		super( page, testInfo );
 
-		this.previewFrame = this.getPreviewFrame();
+		this.previewFrame = this.page.frame( { name: 'elementor-preview-iframe' } );
 
 		this.postId = cleanPostId;
-	}
-
-	async gotoPostId( id = this.postId ) {
-		await this.page.goto( `wp-admin/post.php?post=${ id }&action=elementor` );
-
-		await this.ensurePanelLoaded();
-	}
-
-	async loadTemplate( template ) {
-		const templateData = require( `../templates/${ template }.json` );
-
-		await this.page.evaluate( ( data ) => {
-			const model = new Backbone.Model( { title: 'test' } );
-
-			window.$e.run( 'document/elements/import', {
-				data,
-				model,
-				options: {
-					at: 0,
-					withPageSettings: false,
-				},
-			} );
-		}, templateData );
-	}
-
-	async cleanContent() {
-		await this.page.evaluate( () => {
-			$e.run( 'document/elements/empty', { force: true } );
-		} );
 	}
 
 	async openNavigator() {
@@ -55,7 +28,7 @@ module.exports = class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async closeNavigatorIfOpen() {
-		const isOpen = await this.getPreviewFrame().evaluate( () => elementor.navigator.isOpen() );
+		const isOpen = await this.previewFrame.evaluate( () => elementor.navigator.isOpen() );
 
 		if ( isOpen ) {
 			await this.page.click( '#elementor-navigator__close' );
@@ -70,8 +43,12 @@ module.exports = class EditorPage extends BasePage {
 	async reload() {
 		await this.page.reload();
 
-		this.previewFrame = this.getPreviewFrame();
+		this.previewFrame = this.page.frame( { name: 'elementor-preview-iframe' } );
 	}
+
+    getFrame() {
+		return this.page.frame( { name: 'elementor-preview-iframe' } );
+    }
 
 	/**
 	 * Make sure that the elements panel is loaded.
@@ -79,36 +56,36 @@ module.exports = class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async ensurePanelLoaded() {
-		await this.page.waitForSelector( '.elementor-panel-loading', { state: 'detached' } );
-		await this.page.waitForSelector( '#elementor-loading', { state: 'hidden' } );
+		if ( this.isPanelLoaded ) {
+			return;
+		}
+
+		await this.page.waitForSelector( '#elementor-panel-header-title' );
+		await this.page.waitForSelector( 'iframe#elementor-preview-iframe' );
+
+		this.isPanelLoaded = true;
 	}
 
 	/**
 	 * Add element to the page using a model.
 	 *
-	 * @param {Object}  model               - Model definition.
-	 * @param {string}  container           - Optional Container to create the element in.
-	 * @param {boolean} isContainerASection - Optional. Is the container a section.
+	 * @param {Object} model     - Model definition.
+	 * @param {string} container - Optional Container to create the element in.
 	 *
 	 * @return {Promise<*>} Element ID
 	 */
-	async addElement( model, container = null, isContainerASection = false ) {
-		return await this.page.evaluate( addElement, { model, container, isContainerASection } );
+	async addElement( model, container = null ) {
+		return await this.page.evaluate( addElement, { model, container } );
 	}
 
 	/**
 	 * Add a widget by `widgetType`.
 	 *
-	 * @param {string}  widgetType
-	 * @param {string}  container           - Optional Container to create the element in.
-	 * @param {boolean} isContainerASection - Optional. Is the container a section.
-	 * @return {Promise<string>}			- widget ID
+	 * @param {string} widgetType
+	 * @param {string} container  - Optional Container to create the element in.
 	 */
-	async addWidget( widgetType, container = null, isContainerASection = false ) {
-		const widgetId = await this.addElement( { widgetType, elType: 'widget' }, container, isContainerASection );
-		await this.getPreviewFrame().waitForSelector( `[data-id='${ widgetId }']` );
-
-		return widgetId;
+	async addWidget( widgetType, container = null ) {
+		return await this.addElement( { widgetType, elType: 'widget' }, container );
 	}
 
 	/**
@@ -125,17 +102,8 @@ module.exports = class EditorPage extends BasePage {
 		return this.getPreviewFrame().$( getElementSelector( id ) );
 	}
 
-	/**
-	 * @return {import('@playwright/test').Frame|null}
-	 */
 	getPreviewFrame() {
-		const previewFrame = this.page.frame( { name: 'elementor-preview-iframe' } );
-
-		if ( ! this.previewFrame ) {
-			this.previewFrame = previewFrame;
-		}
-
-		return previewFrame;
+		return this.page.frame( { name: 'elementor-preview-iframe' } );
 	}
 
 	/**
@@ -237,18 +205,6 @@ module.exports = class EditorPage extends BasePage {
 		await this.activatePanelTab( 'advanced' );
 		await this.page.selectOption( '.elementor-control-_element_width >> select', 'initial' );
 		await this.page.locator( '.elementor-control-_element_custom_width .elementor-control-input-wrapper input' ).fill( width );
-	}
-
-	/**
-	 * Set a custom width value to a widget.
-	 *
-	 * @param {string}        controlId - The control to set the value to;
-	 * @param {string|number} value     - The value to set;
-	 *
-	 * @return {Promise<void>}
-	 */
-	async setSliderControlValue( controlId, value ) {
-		await this.page.locator( '.elementor-control-' + controlId + ' .elementor-slider-input input' ).fill( value.toString() );
 	}
 
 	/**
@@ -450,54 +406,10 @@ module.exports = class EditorPage extends BasePage {
 			this.page.waitForResponse( '/wp-admin/admin-ajax.php' ),
 			this.page.locator( '#elementor-panel-header-menu-button i' ).click(),
 			this.page.waitForLoadState( 'networkidle' ),
-			this.page.waitForSelector( '#elementor-panel-footer-saver-publish .elementor-button.e-primary.elementor-disabled' ),
+			this.page.waitForSelector( '#elementor-panel-footer-saver-publish .elementor-button.elementor-button-success.elementor-disabled' ),
 		] );
 
 		await this.page.locator( '.elementor-panel-menu-item-view-page > a' ).click();
 		await this.page.waitForLoadState( 'networkidle' );
-	}
-
-	async previewChanges( context ) {
-		const previewPagePromise = context.waitForEvent( 'page' );
-
-		await this.page.locator( '#elementor-panel-footer-saver-preview' ).click();
-		await this.page.waitForLoadState( 'networkidle' );
-
-		const previewPage = await previewPagePromise;
-		await previewPage.waitForLoadState();
-
-		return previewPage;
-	}
-
-	/**
-	 * Apply Element Settings
-	 *
-	 * Apply settings to a widget without having to navigate through its Panels and Sections to set each individual
-	 * control value.
-	 *
-	 * You can get the Element settings by right-clicking an existing widget or element in the Editor, choose "Copy",
-	 * then paste the content into a text editor and filter out just the settings you want to apply to your element.
-	 *
-	 * Example usage:
-	 * ```
-	 * await editor.applyElementSettings( 'cdefd82', {
-	 *     background_background: 'classic',
-	 *     background_color: 'rgb(255, 10, 10)',
-	 * } );
-	 * ```
-	 *
-	 * @param {string} elementId - Id of the element you intend to apply the settings to.
-	 * @param {Object} settings  - Object settings from the Editor > choose element > right-click > "Copy".
-	 *
-	 * @return {Promise<void>}
-	 */
-	async applyElementSettings( elementId, settings ) {
-		await this.page.evaluate(
-			( args ) => $e.run( 'document/elements/settings', {
-				container: elementor.getContainer( args.elementId ),
-				settings: args.settings,
-			} ),
-			{ elementId, settings },
-		);
 	}
 };

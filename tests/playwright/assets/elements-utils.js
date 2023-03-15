@@ -1,20 +1,20 @@
 /**
  * Add element to the page using model and parent container.
  *
- * @param {Object}      options                     - Model definition.
- * @param {*}           options.model
- * @param {string|null} options.container           - Parent container ID. Optional.
- * @param {boolean}     options.isContainerASection - If `container` is a section. Optional.
+ * @param {Object}      model           - Model definition.
+ * @param {*}           model.model
+ *
+ * @param {string|null} model.container - Parent container ID. Optional.
  * @return {Promise<*>} element id
  */
- const addElement = async ( { model, container = null, isContainerASection = false } ) => {
+ const addElement = async ( { model, container = null } ) => {
 	let parent;
 
 	if ( container ) {
 		parent = elementor.getContainer( container );
 	} else {
 		// If a `container` isn't supplied - create a new Section.
-		parent = $e.run(
+		const section = $e.run(
 			'document/elements/create',
 			{
 				model: { elType: 'section' },
@@ -23,11 +23,7 @@
 			},
 		);
 
-		isContainerASection = true;
-	}
-
-	if ( isContainerASection ) {
-		parent = parent.children[ 0 ];
+		parent = section.children[ 0 ];
 	}
 
 	const element = $e.run(

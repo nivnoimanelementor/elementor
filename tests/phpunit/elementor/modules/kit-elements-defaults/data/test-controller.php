@@ -135,21 +135,15 @@ class Test_Controller extends Elementor_Test_Base {
 		$response = $this->send_request( 'PUT', '/kit-elements-defaults/button', [
 			'settings' => [
 				'text' => 'Text before <script>alert("error")</script> Some text after',
-				'__globals__' => [
-					'button_text_color' => '<script>globals/colors?id=secondary</script>',
-				],
 			],
 		] );
 
 		// Assert.
 		$this->assertEquals( 200, $response->get_status() );
 
-		$this->assertSame( [
+		$this->assertEquals( [
 			'button' => [
 				'text' => 'Text before alert("error") Some text after',
-				'__globals__' => [
-					'button_text_color' => 'globals/colors?id=secondary',
-				]
 			],
 		], $this->kit->get_json_meta( Module::META_KEY ) );
 	}
@@ -233,10 +227,6 @@ class Test_Controller extends Elementor_Test_Base {
 				'text_align_mobile' => 'left',
 				'text_align_widescreen' => 'left',
 				'invalid_control' => 'that_should_be_removed',
-				"content_width" => [
-					"size" => 50,
-					"unit" => "px",
-				],
 				'__globals__' => [
 					'color_link' => 'globals/colors?id=secondary',
 					'color_link_mobile' => 'globals/colors?id=primary',
@@ -252,7 +242,7 @@ class Test_Controller extends Elementor_Test_Base {
 		// Assert.
 		$this->assertEquals( 200, $response->get_status() );
 
-		$this->assertSame( [
+		$this->assertEquals( [
 			'section' => [
 				'heading_color' => 'red',
 				'color_text' => '#FFF',
@@ -260,10 +250,6 @@ class Test_Controller extends Elementor_Test_Base {
 				'text_align_tablet' => 'right',
 				'text_align_mobile' => 'left',
 				'text_align_widescreen' => 'left',
-				'content_width' => [
-					'size' => 50,
-					'unit' => 'px',
-				],
 				'__globals__' => [
 					'color_link' => 'globals/colors?id=secondary',
 					'color_link_mobile' => 'globals/colors?id=primary',

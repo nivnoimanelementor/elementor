@@ -14,7 +14,7 @@
 			right: 2px;
 			top: 2px;
 			bottom: 2px;
-			outline: 2px solid var(--e-p-border-con);
+			outline: 2px solid var( --outline-color );
 			animation: section-outline .75s;
 		}
 	}
@@ -26,6 +26,24 @@
 
 			&:after {
 				content: '';
+			}
+		}
+	}
+
+	// Section Full (No more columns) - Overlay
+	&-filled {
+
+		.elementor-sortable-placeholder {
+
+			&.elementor-column {
+				display: none;
+			}
+		}
+
+		.elementor-row {
+
+			&.elementor-draggable-over {
+				border: 1px solid $editor-danger;
 			}
 		}
 	}
@@ -51,10 +69,11 @@
 		}
 
 		&__title {
-			font-family: var(--e-a-font-family);
+			font-family: $admin-font-family;
 			font-size: 13px;
 			font-weight: 500;
-			color: var(--e-a-color-txt);
+			text-transform: uppercase;
+			color: $editor-darker;
 		}
 
 		&__list {
@@ -75,17 +94,17 @@
 				}
 
 				path {
-					fill: var(--e-a-color-white);
+					fill: $white;
 				}
 
 				rect {
-					fill: var(--e-a-bg-active-bold);
+					fill: $editor-lightest;
 					transition: .3s all;
 				}
 
 				&:hover {
 					rect {
-						fill: var(--e-a-color-txt);
+						fill: $editor-dark;
 					}
 				}
 

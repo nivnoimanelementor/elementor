@@ -46,9 +46,7 @@ module.exports = Marionette.Behavior.extend( {
 					{
 						name: 'navigator',
 						icon: 'eicon-navigator',
-						title: elementorCommon.config.experimentalFeatures.editor_v2
-							? __( 'Structure', 'elementor' )
-							: __( 'Navigator', 'elementor' ),
+						title: __( 'Navigator', 'elementor' ),
 						callback: () => $e.route( 'navigator', {
 							reOpen: true,
 							model: this.view.model,

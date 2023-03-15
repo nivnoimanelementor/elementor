@@ -17,8 +17,6 @@ export class NestedRepeaterDuplicateContainer extends Base {
 				edit: false, // Not losing focus.
 			},
 		} );
-
-		container.render();
 	}
 }
 

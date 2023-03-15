@@ -1,19 +1,13 @@
-import { ComponentType } from 'react';
+import { FC } from 'react';
 
-export type Location = string;
-export type Filler = ComponentType;
-export type Name = string;
-export type Id = string;
-export type Priority = number;
+type MakeOptional<Type, Key extends keyof Type> =
+	Omit<Type, Key> &
+	Partial<Pick<Type, Key>>;
 
-export type InjectionOptions = {
-	priority?: Priority;
-	overwrite?: boolean;
-}
+export type Fill = {
+	location: string;
+	component: FC; // TODO: support class components.
+	priority: number;
+};
 
-export type Injection = {
-	location: Location;
-	filler: Filler;
-	priority: Priority;
-	id: Id;
-}
+export type FillWithOptionalPriority = MakeOptional<Fill, 'priority'>;

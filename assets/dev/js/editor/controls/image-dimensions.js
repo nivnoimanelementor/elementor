@@ -5,14 +5,11 @@ var ControlMultipleBaseItemView = require( 'elementor-controls/base-multiple' ),
 
 ControlImageDimensionsItemView = ControlMultipleBaseItemView.extend( {
 
-	behaviors() {
-		return {
-			...ControlMultipleBaseItemView.prototype.behaviors.apply( this ),
-			Scrubbing: {
-				behaviorClass: Scrubbing,
-				scrubSettings: { intentTime: 800 },
-			},
-		};
+	behaviors: {
+		Scrubbing: {
+			behaviorClass: Scrubbing,
+			scrubSettings: { intentTime: 800 },
+		},
 	},
 
 	ui() {

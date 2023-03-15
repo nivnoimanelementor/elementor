@@ -111,10 +111,6 @@ export default class Component extends ComponentBase {
 		return this.currentDocument.id;
 	}
 
-	getInitialId() {
-		return elementor.config.initial_document.id;
-	}
-
 	/**
 	 * Function setCurrent().
 	 *

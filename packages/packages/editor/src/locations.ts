@@ -1,5 +1,7 @@
-import { createInjectorFor } from '@elementor/locations';
+import { FillWithOptionalPriority, addFill } from '@elementor/locations';
 
 export const LOCATION_TOP = 'editor/top';
 
-export const injectIntoTop = createInjectorFor( LOCATION_TOP );
+export function addToTop( { component, priority }: Omit<FillWithOptionalPriority, 'location'> ) {
+	addFill( { location: LOCATION_TOP, component, priority } );
+}

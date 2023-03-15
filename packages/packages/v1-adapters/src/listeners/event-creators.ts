@@ -1,6 +1,6 @@
-import { CommandEventDescriptor, RouteEventDescriptor, WindowEventDescriptor } from './types';
+import { CommandEventDescriptor, WindowEventDescriptor } from './types';
 
-export const commandStartEvent = ( command: CommandEventDescriptor['name'] ): CommandEventDescriptor => {
+export const commandStartEvent = ( command: CommandEventDescriptor['name'] ) : CommandEventDescriptor => {
 	return {
 		type: 'command',
 		name: command,
@@ -8,7 +8,7 @@ export const commandStartEvent = ( command: CommandEventDescriptor['name'] ): Co
 	};
 };
 
-export const commandEndEvent = ( command: CommandEventDescriptor['name'] ): CommandEventDescriptor => {
+export const commandEndEvent = ( command: CommandEventDescriptor['name'] ) : CommandEventDescriptor => {
 	return {
 		type: 'command',
 		name: command,
@@ -16,23 +16,7 @@ export const commandEndEvent = ( command: CommandEventDescriptor['name'] ): Comm
 	};
 };
 
-export const routeOpenEvent = ( route: RouteEventDescriptor['name'] ): RouteEventDescriptor => {
-	return {
-		type: 'route',
-		name: route,
-		state: 'open',
-	};
-};
-
-export const routeCloseEvent = ( route: RouteEventDescriptor['name'] ): RouteEventDescriptor => {
-	return {
-		type: 'route',
-		name: route,
-		state: 'close',
-	};
-};
-
-export const windowEvent = ( event: WindowEventDescriptor['name'] ): WindowEventDescriptor => {
+export const windowEvent = ( event: WindowEventDescriptor['name'] ) : WindowEventDescriptor => {
 	return {
 		type: 'window-event',
 		name: event,
@@ -40,9 +24,5 @@ export const windowEvent = ( event: WindowEventDescriptor['name'] ): WindowEvent
 };
 
 export const v1ReadyEvent = () => {
-	return windowEvent( 'elementor/initialized' );
-};
-
-export const editModeChangeEvent = () => {
-	return windowEvent( 'elementor/edit-mode/change' );
+	return windowEvent( 'elementor/v1/initialized' );
 };

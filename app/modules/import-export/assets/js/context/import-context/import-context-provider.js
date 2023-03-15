@@ -6,7 +6,6 @@ export const ImportContext = React.createContext();
 
 export default function ImportContextProvider( props ) {
 	const initialState = {
-		id: null,
 		file: null,
 		uploadedData: null,
 		importedData: null,

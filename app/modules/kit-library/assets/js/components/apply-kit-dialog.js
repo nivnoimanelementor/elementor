@@ -7,8 +7,7 @@ export default function ApplyKitDialog( props ) {
 
 	const startImportProcess = useCallback( ( applyAll = false ) => {
 		let url = '/import/process' +
-			`?id=${ props.id }` +
-			`&file_url=${ encodeURIComponent( props.downloadLink ) }` +
+			`?file_url=${ encodeURIComponent( props.downloadLink ) }` +
 			`&nonce=${ props.nonce }&referrer=kit-library`;
 
 		if ( applyAll ) {
@@ -38,7 +37,6 @@ export default function ApplyKitDialog( props ) {
 }
 
 ApplyKitDialog.propTypes = {
-	id: PropTypes.string.isRequired,
 	downloadLink: PropTypes.string.isRequired,
 	nonce: PropTypes.string.isRequired,
 	onClose: PropTypes.func.isRequired,

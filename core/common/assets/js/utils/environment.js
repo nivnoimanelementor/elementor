@@ -33,12 +33,7 @@ const matchUserAgent = ( UserAgentStr ) => {
 	// Apple Webkit engine
 	isAppleWebkit = matchUserAgent( 'AppleWebKit' ) && ! isBlink,
 
-	isTouchDevice = ( 'ontouchstart' in window ) ||
-		( navigator.maxTouchPoints > 0 ) ||
-		( navigator.msMaxTouchPoints > 0 ),
-
 	environment = {
-		isTouchDevice,
 		appleWebkit: isAppleWebkit,
 		blink: isBlink,
 		chrome: isChrome,

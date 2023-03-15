@@ -80,8 +80,10 @@ class App extends BaseApp {
 			return $settings;
 		} );
 
-		$this->render();
-		die;
+		if ( $this->is_current() ) {
+			$this->render();
+			die;
+		}
 	}
 
 	protected function get_init_settings() {
@@ -134,7 +136,7 @@ class App extends BaseApp {
 		}
 	}
 
-	private function enqueue_assets() {
+	public function enqueue_assets() {
 		Plugin::$instance->init_common();
 
 		/** @var WebCLIModule $web_cli */
@@ -150,7 +152,19 @@ class App extends BaseApp {
 			'4.0.6-rc.1'
 		);
 
-		Plugin::$instance->common->register_styles();
+		wp_register_style(
+			'elementor-icons',
+			$this->get_css_assets_url( 'elementor-icons', 'assets/lib/eicons/css/' ),
+			[],
+			Icons_Manager::ELEMENTOR_ICONS_VERSION
+		);
+
+		wp_register_style(
+			'elementor-common',
+			$this->get_css_assets_url( 'common', null, 'default', true ),
+			[],
+			ELEMENTOR_VERSION
+		);
 
 		wp_register_style(
 			'select2',
@@ -206,7 +220,7 @@ class App extends BaseApp {
 			true
 		);
 
-		$this->enqueue_dark_theme_detection_script();
+//		$this->enqueue_dark_theme_detection_script();
 
 		wp_set_script_translations( 'elementor-app-packages', 'elementor' );
 		wp_set_script_translations( 'elementor-app', 'elementor' );
@@ -247,10 +261,16 @@ class App extends BaseApp {
 		// Happens after WP plugin page validation.
 		add_filter( 'add_menu_classes', [ $this, 'fix_submenu' ] );
 
-		if ( $this->is_current() ) {
-			add_action( 'admin_init', [ $this, 'admin_init' ], 0 );
-		} else {
-			add_action( 'elementor/common/after_register_scripts', [ $this, 'enqueue_app_loader' ] );
+		add_action( 'admin_init', [ $this, 'admin_init' ], 0 );
+//		add_action( 'elementor/common/after_register_scripts', [ $this, 'enqueue_app_loader' ] );
+
+		if ( ( ! empty( $_GET['hide_wp'] ) && 'true' === $_GET['hide_wp'] ) ) {
+			wp_enqueue_style(
+				'elementor-hide-wp',
+				$this->get_css_assets_url( 'modules/app-dashboard/app' ),
+				[],
+				ELEMENTOR_VERSION
+			);
 		}
 	}
 }

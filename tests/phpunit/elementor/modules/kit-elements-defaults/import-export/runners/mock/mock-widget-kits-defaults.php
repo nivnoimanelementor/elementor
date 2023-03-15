@@ -23,14 +23,6 @@ class Mock_Widget_Kits_Defaults extends Widget_Base {
 		);
 
 		$this->add_control(
-			'slider',
-			[
-				'label' => esc_html__( 'Slider', 'elementor' ),
-				'type' => Controls_Manager::SLIDER,
-			]
-		);
-
-		$this->add_control(
 			'color',
 			[
 				'label' => esc_html__( 'Color', 'elementor' ),

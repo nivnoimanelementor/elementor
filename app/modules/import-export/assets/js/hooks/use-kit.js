@@ -30,12 +30,11 @@ export default function useKit() {
 				},
 			} );
 		},
-		initImportProcess = async ( { id, session, include, overrideConditions, referrer, selectedCustomPostTypes } ) => {
+		initImportProcess = async ( { session, include, overrideConditions, referrer, selectedCustomPostTypes } ) => {
 			const ajaxConfig = {
 				data: {
 					action: IMPORT_KIT_KEY,
 					data: {
-						id,
 						session,
 						include,
 						overrideConditions,
@@ -92,11 +91,10 @@ export default function useKit() {
 				}
 			}
 		},
-		importKit = async ( { id, session, include, overrideConditions, referrer, selectedCustomPostTypes } ) => {
+		importKit = async ( { session, include, overrideConditions, referrer, selectedCustomPostTypes } ) => {
 			ajaxActions.reset();
 
 			const importSession = await initImportProcess( {
-				id,
 				session,
 				include,
 				overrideConditions,

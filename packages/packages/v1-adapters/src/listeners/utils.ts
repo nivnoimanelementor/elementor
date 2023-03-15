@@ -1,21 +1,17 @@
-import { ExtendedWindow, ListenerEvent } from './types';
-import { setReady } from './is-ready';
+import { ListenerEvent } from './types';
 
 export function dispatchReadyEvent() {
 	return getV1LoadingPromise().then( () => {
-		setReady( true );
-		window.dispatchEvent( new CustomEvent( 'elementor/initialized' ) );
+		window.dispatchEvent( new CustomEvent( 'elementor/v1/initialized' ) );
 	} );
 }
 
 function getV1LoadingPromise() {
-	const v1LoadingPromise = ( window as unknown as ExtendedWindow ).__elementorEditorV1LoadingPromise;
-
-	if ( ! v1LoadingPromise ) {
+	if ( ! ( window as any ).__elementorEditorV1LoadingPromise ) {
 		return Promise.reject( 'Elementor Editor V1 is not loaded' );
 	}
 
-	return v1LoadingPromise;
+	return ( window as any ).__elementorEditorV1LoadingPromise;
 }
 
 export function normalizeEvent( e: ListenerEvent['originalEvent'] ): ListenerEvent {
@@ -24,14 +20,6 @@ export function normalizeEvent( e: ListenerEvent['originalEvent'] ): ListenerEve
 			type: 'command',
 			command: e.detail.command,
 			args: e.detail.args,
-			originalEvent: e,
-		};
-	}
-
-	if ( e instanceof CustomEvent && e.detail?.route ) {
-		return {
-			type: 'route',
-			route: e.detail.route,
 			originalEvent: e,
 		};
 	}

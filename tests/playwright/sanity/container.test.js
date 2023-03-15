@@ -52,7 +52,7 @@ test.describe( 'Container tests', () => {
 
 		// Assert.
 		// Test that the image is between the heading & button.
-		expect( elBeforeButton ).toEqual( elAfterHeading );
+		expect( elBeforeButton ).toBe( elAfterHeading );
 	} );
 
 	test( 'Test widgets display inside the container using various directions and content width', async ( { page }, testInfo ) => {
@@ -83,9 +83,13 @@ test.describe( 'Container tests', () => {
 
 		await editor.hideVideoControls();
 		await editor.togglePreviewMode();
+		await page.waitForLoadState( 'networkidle' );
 
 		// Assert
-		await expect( container ).toHaveScreenshot( 'container-row.png' );
+		expect( await container.screenshot( {
+			type: 'jpeg',
+			quality: 90,
+		} ) ).toMatchSnapshot( 'container-row.jpeg' );
 
 		// Act
 		await editor.togglePreviewMode();
@@ -95,7 +99,12 @@ test.describe( 'Container tests', () => {
 		await editor.hideVideoControls();
 		await editor.togglePreviewMode();
 
-		await expect( container ).toHaveScreenshot( 'container-row-full.png' );
+		await page.waitForLoadState( 'networkidle' );
+
+		expect( await container.screenshot( {
+			type: 'jpeg',
+			quality: 90,
+		} ) ).toMatchSnapshot( 'container-row-full.jpeg' );
 
 		// Act
 		await editor.togglePreviewMode();
@@ -108,9 +117,13 @@ test.describe( 'Container tests', () => {
 		await page.locator( '.elementor-control-min_height .elementor-control-input-wrapper input' ).fill( '1500' );
 		await editor.hideVideoControls();
 		await editor.togglePreviewMode();
+		await page.waitForLoadState( 'networkidle' );
 
 		// Assert
-		await expect( container ).toHaveScreenshot( 'container-column-full-start.png' );
+		expect( await container.screenshot( {
+			type: 'jpeg',
+			quality: 90,
+		} ) ).toMatchSnapshot( 'container-column-full-start.jpeg' );
 
 		// Act
 		await editor.togglePreviewMode();
@@ -119,9 +132,13 @@ test.describe( 'Container tests', () => {
 		await page.selectOption( '.elementor-control-content_width >> select', 'boxed' );
 		await editor.hideVideoControls();
 		await editor.togglePreviewMode();
+		await page.waitForLoadState( 'networkidle' );
 
 		// Assert
-		await expect( container ).toHaveScreenshot( 'container-column-boxed-start.png' );
+		expect( await container.screenshot( {
+			type: 'jpeg',
+			quality: 90,
+		} ) ).toMatchSnapshot( 'container-column-boxed-start.jpeg' );
 	} );
 
 	test( 'Test widgets inside the container using position absolute', async ( { page }, testInfo ) => {
@@ -261,7 +278,7 @@ test.describe( 'Container tests', () => {
 
 		await editor.addElement( { elType: 'container' }, 'document' );
 
-		await editor.getPreviewFrame().locator( '.elementor-editor-element-edit' ).click( { button: 'right' } );
+		await editor.getFrame().locator( '.elementor-editor-element-edit' ).click( { button: 'right' } );
 		await expect( page.locator( '.elementor-context-menu-list__item-newContainer' ) ).toBeVisible();
 		await page.locator( '.elementor-context-menu-list__item-newContainer' ).click();
 		await expect( editor.getPreviewFrame().locator( '.e-con-full' ) ).toHaveCount( 1 );
@@ -294,6 +311,7 @@ test.describe( 'Container tests', () => {
 		await editor.setWidgetCustomWidth( '80' );
 
 		await editor.addWidget( 'google_maps', container );
+		await page.waitForLoadState( 'domcontentloaded' );
 		await editor.getPreviewFrame().waitForSelector( '.elementor-widget-google_maps iframe' );
 		// Set widget custom width to 40%.
 		await editor.setWidgetCustomWidth( '40' );
@@ -357,7 +375,7 @@ test.describe( 'Container tests', () => {
 		const videoURL = await page.locator( '.attachment-details-copy-link' ).inputValue(),
 			editor = await wpAdmin.useElementorCleanPost(),
 			containerId = await editor.addElement( { elType: 'container' }, 'document' ),
-			container = editor.getPreviewFrame().locator( '.elementor-element-' + containerId );
+			container = editor.getFrame().locator( '.elementor-element-' + containerId );
 
 		// Set Canvas template.
 		await editor.useCanvasTemplate();
@@ -438,11 +456,11 @@ test.describe( 'Container tests', () => {
 		try {
 			await wpAdmin.setLanguage( 'he_IL' );
 			const editor = await createCanvasPage( wpAdmin );
-			await editor.closeNavigatorIfOpen();
 			const container = await addContainerAndHover( editor );
+
 			expect( await container.screenshot( {
 				type: 'jpeg',
-				quality: 100,
+				quality: 90,
 			} ) ).toMatchSnapshot( 'container-rtl-centered.jpeg' );
 		} finally {
 			await wpAdmin.setLanguage( '' );
@@ -502,29 +520,6 @@ test.describe( 'Container tests', () => {
 		} finally {
 			await wpAdmin.setLanguage( '' );
 		}
-	} );
-
-	test( 'Widgets are not editable in preview mode', async ( { page }, testInfo ) => {
-		// Arrange.
-		const wpAdmin = new WpAdminPage( page, testInfo );
-		const editor = await wpAdmin.useElementorCleanPost(),
-			container = await editor.addElement( { elType: 'container' }, 'document' );
-
-		// Set row direction.
-		await page.click( '.elementor-control-flex_direction i.eicon-arrow-right' );
-
-		// Add widgets.
-		await editor.addWidget( widgets.button, container );
-		await editor.addWidget( widgets.heading, container );
-		await editor.addWidget( widgets.image, container );
-
-		const preview = editor.getPreviewFrame();
-
-		const resizers = await preview.locator( '.ui-resizable-handle.ui-resizable-e' );
-		await expect( resizers ).toHaveCount( 4 );
-
-		await editor.togglePreviewMode();
-		await expect( resizers ).toHaveCount( 0 );
 	} );
 } );
 

@@ -1,17 +1,7 @@
-export type ExtendedWindow = Window & {
-	__elementorEditorV1LoadingPromise?: Promise<void>;
-};
-
 export type CommandEventDescriptor = {
 	type: 'command',
 	name: string,
 	state: 'before' | 'after',
-};
-
-export type RouteEventDescriptor = {
-	type: 'route',
-	name: string,
-	state: 'open' | 'close',
 };
 
 export type WindowEventDescriptor = {
@@ -19,16 +9,10 @@ export type WindowEventDescriptor = {
 	name: string,
 };
 
-export type CommandEvent<TArgs extends object = object> = {
+export type CommandEvent = {
 	type: CommandEventDescriptor['type'],
 	command: string,
-	args: TArgs,
-	originalEvent: CustomEvent,
-};
-
-export type RouteEvent = {
-	type: RouteEventDescriptor['type'],
-	route: string,
+	args: object,
 	originalEvent: CustomEvent,
 };
 
@@ -38,8 +22,8 @@ export type WindowEvent = {
 	originalEvent: Event,
 };
 
-export type EventDescriptor = CommandEventDescriptor | WindowEventDescriptor | RouteEventDescriptor;
+export type EventDescriptor = CommandEventDescriptor | WindowEventDescriptor;
 
-export type ListenerEvent = WindowEvent | CommandEvent | RouteEvent;
+export type ListenerEvent = WindowEvent | CommandEvent;
 
 export type ListenerCallback = ( e: ListenerEvent ) => void;

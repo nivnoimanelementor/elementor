@@ -10,7 +10,7 @@
 		.elementor-first-add {
 			width: auto;
 			height: auto;
-			inset: 0;
+			inset: 0px;
 		}
 	}
 
@@ -115,10 +115,10 @@
 
 			.elementor-editor-element-setting {
 				position: relative;
-				background-color: var(--e-p-border-con);
+				background-color: $editor-darker;
 
 				&:hover {
-					background-color: var(--e-p-border-con-hover);
+					background-color: $editor-darkest;
 				}
 
 				// Hide any unwanted setting controls.
@@ -152,10 +152,10 @@
 				border-radius: 0;
 				border-end-end-radius: 3px;
 				height: auto;
-				background-color: var(--e-p-border-con);
+				background-color: $editor-darker;
 
 				&:hover {
-					background-color: var(--e-p-border-con-hover);
+					background-color: $editor-darkest;
 				}
 
 				// Replace the edit eicon with Container eicon.
