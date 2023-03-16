@@ -118,3 +118,36 @@
 		overflow-y: auto;
 	}
 }
+.e-tooltip-container{
+	position: absolute;
+	top: 0;
+	left: calc(100% + 10px);
+	padding: 5px;
+	background: rgba(0,0,0,0.5);
+	border-radius: 5px;
+	white-space: nowrap;
+	opacity:0;
+	visibility:hidden;
+	transition: opacity 300ms;
+	color: #fff;
+	font-size: 12px;
+	&.active{
+		opacity:1;
+		visibility:visible;
+	}
+	&.arrow-left{
+		&:before{
+			position: absolute;
+			content: "";
+			width: 0;
+			height: 0;
+			border-top: 10px solid transparent;
+			border-bottom: 10px solid transparent;
+			border-right: 10px solid rgba(0,0,0,0.5);
+			right: 100%;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+		}
+	}
+}

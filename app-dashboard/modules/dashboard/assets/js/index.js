@@ -41,7 +41,7 @@ function useMenuItems( path ) {
 				},
 			},
 			{
-				text: 'General',
+				text: 'Site Settings',
 				type: 'setup',
 				isActive: 'setup/general' === path,
 				url: '/dashboard/setup/general',
@@ -63,7 +63,7 @@ function useMenuItems( path ) {
 				},
 			},
 			{
-				text: 'Role Manager',
+				text: 'User Roles',
 				type: 'setup',
 				isActive: 'role-manager' === path,
 				url: '/dashboard/setup/role-manager',
@@ -161,17 +161,17 @@ function useMenuItems( path ) {
 					src: 'edit.php?post_type=elementor_library&hide_wp=true&tabs_group=library',
 				},
 			},
-			{
-				text: 'Kit Actions',
-				type: 'design',
-				isActive: 'kit-actions' === path,
-				url: '/dashboard/design/kit-actions',
-				display: {
-					path: '/design/kit-actions',
-					type: 'iframe',
-					src: 'admin.php?page=elementor-tools&hide_wp=true#tab-import-export-kit',
-				},
-			},
+			// {
+			// 	text: 'Kit Actions',
+			// 	type: 'design',
+			// 	isActive: 'kit-actions' === path,
+			// 	url: '/dashboard/design/kit-actions',
+			// 	display: {
+			// 		path: '/design/kit-actions',
+			// 		type: 'iframe',
+			// 		src: 'admin.php?page=elementor-tools&hide_wp=true#tab-import-export-kit',
+			// 	},
+			// },
 			{
 				text: 'Custom Fonts',
 				type: 'design',

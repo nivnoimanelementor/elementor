@@ -2,6 +2,13 @@ body {
     background-color: #fff !important;
 }
 
+#adminmenu{
+	> li{
+		&:nth-child(3){
+			display:none;
+		}
+	}
+}
 .toplevel_page_elementor-dashboard {
 	#screen-meta {
 		display: none;
