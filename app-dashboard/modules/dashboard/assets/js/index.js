@@ -25,7 +25,7 @@ function useMenuItems( path ) {
 				display: {
 					path: '/site-content',
 					type: 'image',
-					src: 'kit.png',
+					src: 'site-content.png',
 				},
 			},
 			{
