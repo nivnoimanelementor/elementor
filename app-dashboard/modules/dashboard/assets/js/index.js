@@ -15,9 +15,41 @@ import DisplayContent from './pages/display-content';
  * @return {Array} menu items
  */
 function useMenuItems( path ) {
-	return useMemo( () => {
-		console.log( path );
+	//return useMemo( () => {
 		return [
+			{
+				text: 'Site Content',
+				type: 'site-content',
+				isActive: '/dashboard/site-content' === path,
+				url: '/dashboard/site-content',
+				display: {
+					path: '/site-content',
+					type: 'image',
+					src: 'kit.png',
+				},
+			},
+			{
+				text: 'Basic Setup',
+				type: 'basic-setup',
+				isActive: '/dashboard/basic-setup' === path,
+				url: '/dashboard/basic-setup',
+				display: {
+					path: '/basic-setup',
+					type: 'image',
+					src: 'basic-setup.png',
+				},
+			},
+			{
+				text: 'Website Templates',
+				type: 'website-templates',
+				isActive: '/dashboard/website-templates' === path,
+				url: '/dashboard/website-templates',
+				display: {
+					path: '/website-templates',
+					type: 'iframe',
+					src: 'admin.php?page=elementor-app&ver=3.10.2&hide_wp=true#kit-library',
+				},
+			},
 			{
 				text: 'Home',
 				type: 'home',
@@ -52,23 +84,45 @@ function useMenuItems( path ) {
 				},
 			},
 			{
-				text: 'Features',
-				type: 'setup',
-				isActive: 'setup-features' === path,
-				url: '/dashboard/setup/features',
+				text: 'Elementor Settings',
+				type: 'settings',
+				isActive: 'elementor-settings' === path,
+				url: '/dashboard/settings/elementor-settings',
 				display: {
-					path: '/setup/features',
+					path: '/settings/elementor-settings',
+					type: 'image',
+					src: 'elementor-settings.png',
+				},
+			},
+			{
+				text: 'Design Settings',
+				type: 'settings',
+				isActive: 'design-settings' === path,
+				url: '/dashboard/settings/design-settings',
+				display: {
+					path: '/settings/design-settings',
+					type: 'image',
+					src: 'design-settings.png',
+				},
+			},
+			{
+				text: 'Features & Experiments',
+				type: 'settings',
+				isActive: 'setup-features' === path,
+				url: '/dashboard/settings/features',
+				display: {
+					path: '/settings/features',
 					type: 'iframe',
 					src: 'admin.php?page=elementor&hide_wp=true#tab-experiments',
 				},
 			},
 			{
-				text: 'User Roles',
-				type: 'setup',
+				text: 'Role Manage',
+				type: 'settings',
 				isActive: 'role-manager' === path,
-				url: '/dashboard/setup/role-manager',
+				url: '/dashboard/settings/role-manager',
 				display: {
-					path: '/setup/role-manager',
+					path: '/settings/role-manager',
 					type: 'iframe',
 					src: 'admin.php?page=elementor-role-manager&hide_wp=true',
 				},
@@ -85,39 +139,37 @@ function useMenuItems( path ) {
 				},
 			},
 			{
-				text: 'Elementor Settings',
-				type: 'setup',
-				isActive: 'elementor-settings' === path,
-				url: '/dashboard/setup/elementor-settings',
+				text: 'Custom Code',
+				type: 'customizations',
+				isActive: 'custom-code' === path,
+				url: '/dashboard/customizations/custom-code',
 				display: {
-					path: '/setup/elementor-settings',
-					type: 'image',
-					src: 'Elementor Settings.png',
+					path: '/customizations/custom-code',
+					type: 'iframe',
+					src: 'edit.php?post_type=elementor_snippet&hide_wp=true',
 				},
 			},
 			{
 				text: 'Integrations',
-				type: 'setup',
+				type: 'customizations',
 				isActive: 'integrations' === path,
-				url: '/dashboard/setup/integrations',
+				url: '/dashboard/customizations/integrations',
 				display: {
-					path: '/setup/integrations',
+					path: '/customizations/integrations',
 					type: 'iframe',
 					src: 'admin.php?page=elementor&hide_wp=true#tab-integrations',
 				},
-
 			},
 			{
-				text: 'Custom Code',
-				type: 'setup',
-				isActive: 'custom-code' === path,
-				url: '/dashboard/setup/custom-code',
+				text: 'Categories',
+				type: 'customizations',
+				isActive: 'categories' === path,
+				url: '/dashboard/customizations/categories',
 				display: {
-					path: '/setup/custom-code',
+					path: '/customizations/categories',
 					type: 'iframe',
-					src: 'edit.php?post_type=elementor_snippet&hide_wp=true',
+					src: 'edit-tags.php?taxonomy=category&hide_wp=true',
 				},
-
 			},
 			{
 				text: 'Backups',
@@ -128,11 +180,11 @@ function useMenuItems( path ) {
 			},
 			{
 				text: 'Theme Builder',
-				type: 'design',
+				type: 'components',
 				isActive: 'theme-builder' === path,
-				url: '/dashboard/design/theme-builder',
+				url: '/dashboard/components/theme-builder',
 				display: {
-					path: '/design/theme-builder',
+					path: '/components/theme-builder',
 					type: 'iframe',
 					src: 'admin.php?page=elementor-app&ver=3.10.2&hide_wp=true#site-editor',
 				},
@@ -152,11 +204,11 @@ function useMenuItems( path ) {
 			},
 			{
 				text: 'Saved Templates',
-				type: 'design',
+				type: 'components',
 				isActive: 'saved-templates' === path,
-				url: '/dashboard/design/saved-templates',
+				url: '/dashboard/components/saved-templates',
 				display: {
-					path: '/design/saved-templates',
+					path: '/components/saved-templates',
 					type: 'iframe',
 					src: 'edit.php?post_type=elementor_library&hide_wp=true&tabs_group=library',
 				},
@@ -174,22 +226,22 @@ function useMenuItems( path ) {
 			// },
 			{
 				text: 'Custom Fonts',
-				type: 'design',
+				type: 'customizations',
 				isActive: 'custom-fonts' === path,
-				url: '/dashboard/design/custom-fonts',
+				url: '/dashboard/customizations/custom-fonts',
 				display: {
-					path: '/design/custom-fonts',
+					path: '/customizations/custom-fonts',
 					type: 'iframe',
 					src: 'edit.php?post_type=elementor_font&hide_wp=true',
 				},
 			},
 			{
 				text: 'Custom Icons',
-				type: 'design',
+				type: 'customizations',
 				isActive: 'custom-icons' === path,
-				url: '/dashboard/design/custom-icons',
+				url: '/dashboard/customizations/custom-icons',
 				display: {
-					path: '/design/custom-icons',
+					path: '/customizations/custom-icons',
 					type: 'iframe',
 					src: 'edit.php?post_type=elementor_icons&hide_wp=true',
 				},
@@ -218,17 +270,63 @@ function useMenuItems( path ) {
 			},
 			{
 				text: 'Form submissions',
-				type: 'marketing',
+				type: 'components',
 				isActive: 'form-submissions' === path,
-				url: '/dashboard/marketing/form-submissions',
+				url: '/dashboard/components/form-submissions',
 				display: {
-					path: '/marketing/form-submissions',
+					path: '/components/form-submissions',
 					type: 'iframe',
 					src: 'admin.php?page=e-form-submissions&hide_wp=true',
 				},
 			},
+			{
+				text: 'Regenerate CSS',
+				type: 'troubleshooting',
+				isActive: 'regenerate-css' === path,
+				url: '/dashboard/marketing/regenerate-css',
+				display: {
+					path: '/marketing/regenerate-css',
+					type: 'iframe',
+					src: 'admin.php?page=elementor-tools&hide_wp=true',
+				},
+			},
+			{
+				text: 'Version Control',
+				type: 'troubleshooting',
+				isActive: 'version-control' === path,
+				url: '/dashboard/marketing/version-control',
+				display: {
+					path: '/marketing/version-control',
+					type: 'iframe',
+					src: 'admin.php?page=elementor-tools&hide_wp=true#tab-versions',
+				},
+			},
+			{
+				text: 'Staging',
+				type: 'account-and-hosting',
+				linkType: 'link',
+				url: 'https://my.elementor.com/websites/',
+			},
+			{
+				text: 'Backups',
+				type: 'account-and-hosting',
+				linkType: 'link',
+				url: 'https://my.elementor.com/websites/',
+			},
+			{
+				text: 'Site Lock',
+				type: 'account-and-hosting',
+				linkType: 'link',
+				url: 'https://my.elementor.com/websites/',
+			},
+			{
+				text: 'Billing',
+				type: 'account-and-hosting',
+				linkType: 'link',
+				url: 'https://my.elementor.com/websites/',
+			},
 		];
-	}, [ location ] );
+	//}, [ location ] );
 }
 
 export default function Index() {

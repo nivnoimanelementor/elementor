@@ -1,4 +1,5 @@
 import ItemsFilterList from './items-filter-list';
+import MenuItemButton from './menu-item-button';
 import { itemType } from '../models/item';
 
 import './tags-filter.scss';
@@ -14,20 +15,25 @@ export default function ItemsFilter( props ) {
 		return itemType
 			.map( ( tagType ) => ( {
 				...tagType,
+				dropdown: tagType.dropdown ?? true,
 				data: props.items.filter( ( item ) => item.type === tagType.key ),
 			} ) )
-			.filter( ( { data } ) => data.length > 0 );
+			//.filter( ( { data } ) => data.length > 0 );
 	}, [ props.items ] );
 
 	return (
 		<div className="e-kit-library__tags-filter">
 			{
-				itemsByType.map( ( group ) => (
-					<ItemsFilterList
-						key={ group.key }
-						itemsByType={ group }
-					/>
-				) )
+				itemsByType.map( ( group ) => {
+					let args = {
+						key:group.key,
+						itemsByType:group,
+					}
+					if( group.dropdown ){
+						return <ItemsFilterList { ... args }/>
+					}
+					return <MenuItemButton {...args} />;
+				} )
 			}
 		</div>
 	);

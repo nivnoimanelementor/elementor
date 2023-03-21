@@ -1,13 +1,32 @@
 body {
     background-color: #fff !important;
 }
-
+.menu-button-title{
+	padding-right: 1.875rem;
+	padding-left: 1.875rem;
+	text-transform: uppercase;
+	font-weight: 400;
+	margin-bottom: 2.75rem;
+	&.active{
+		color: #0275d8 !important;
+	}
+	&:active,
+	&:focus{
+		box-shadow: none !important;
+		outline: unset !important;
+		color: #0275d8 !important;
+	}
+}
 #adminmenu{
 	> li{
 		&:nth-child(3){
 			display:none;
 		}
 	}
+}
+#wp-admin-bar-new-content,
+#wp-admin-bar-edit-profile{
+	display:none;
 }
 .toplevel_page_elementor-dashboard {
 	#screen-meta {

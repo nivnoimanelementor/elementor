@@ -13,7 +13,7 @@ export default function Header() {
 		},
 		{
 			label: __( 'Backups', 'elementor' ),
-			value: 'https://my.elementor.com/user-profile/',
+			value: 'https://my.elementor.com/websites/',
 		},
 		{
 			label: __( 'Site Lock', 'elementor' ),
@@ -40,11 +40,13 @@ export default function Header() {
 					color={ 'primary' }
 					size={ 'lg' }
 				/>
+				{/*
 				<Select
 					options={ options }
 					value={ 'manageSite' }
 					className="eps-sort-select__select"
 				/>
+				*/}
 			</div>
 		</Grid>
 	);

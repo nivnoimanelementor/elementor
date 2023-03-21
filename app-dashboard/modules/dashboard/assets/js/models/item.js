@@ -1,19 +1,41 @@
 export const itemType = [
 	{
-		key: 'home',
-		label: __( 'Home', 'elementor' ),
-		isOpenByDefault: true,
+		key: 'site-content',
+		label: __( 'Site Content', 'elementor' ),
+		dropdown: false,
+		url:'/dashboard/site-content',
 	},
 	{
-		key: 'setup',
-		label: __( 'Site Setup', 'elementor' ),
+		key: 'basic-setup',
+		label: __( 'Basic Setup', 'elementor' ),
+		dropdown: false,
+		url:'/dashboard/basic-setup',
 	},
 	{
-		key: 'design',
-		label: __( 'Design Tools', 'elementor' ),
+		key: 'website-templates',
+		label: __( 'Website Templates', 'elementor' ),
+		dropdown: false,
+		url:'/dashboard/website-templates',
 	},
 	{
-		key: 'marketing',
-		label: __( 'Marketing Tools', 'elementor' ),
+		key: 'components',
+		label: __( 'Components', 'elementor' ),
+		isOpenByDefault: false,
+	},
+	{
+		key: 'customizations',
+		label: __( 'Customizations', 'elementor' ),
+	},
+	{
+		key: 'settings',
+		label: __( 'Settings', 'elementor' ),
+	},
+	{
+		key: 'troubleshooting',
+		label: __( 'Troubleshooting', 'elementor' ),
+	},
+	{
+		key: 'account-and-hosting',
+		label: __( 'Account and Hosting', 'elementor' ),
 	},
 ];
